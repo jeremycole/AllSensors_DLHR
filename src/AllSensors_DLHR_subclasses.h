@@ -3,6 +3,10 @@
 #ifndef ALLSENSORS_DLHR_SUBCLASSES_H
 #define ALLSENSORS_DLHR_SUBCLASSES_H
 
+#include <AllSensors_DLHR.h>
+
+
+//i2c definitions
 class AllSensors_DLHR_F05D_6 : public AllSensors_DLHR {
 public:
   AllSensors_DLHR_F05D_6(TwoWire *bus) : AllSensors_DLHR(bus, AllSensors_DLHR::SensorType::DIFFERENTIAL, AllSensors_DLHR::SensorResolution::RESOLUTION_16_BITS, 0.5) {}
@@ -16,6 +20,7 @@ public:
 class AllSensors_DLHR_F05D_8 : public AllSensors_DLHR {
 public:
   AllSensors_DLHR_F05D_8(TwoWire *bus) : AllSensors_DLHR(bus, AllSensors_DLHR::SensorType::DIFFERENTIAL, AllSensors_DLHR::SensorResolution::RESOLUTION_18_BITS, 0.5) {}
+  AllSensors_DLHR_F05D_8(uint8_t cs_pin):AllSensors_DLHR(cs_pin, AllSensors_DLHR::SensorType::DIFFERENTIAL, AllSensors_DLHR::SensorResolution::RESOLUTION_18_BITS, 0.5) {}
 };
 
 class AllSensors_DLHR_F05G_6 : public AllSensors_DLHR {
@@ -242,5 +247,6 @@ class AllSensors_DLHR_L60G_8 : public AllSensors_DLHR {
 public:
   AllSensors_DLHR_L60G_8(TwoWire *bus) : AllSensors_DLHR(bus, AllSensors_DLHR::SensorType::GAGE, AllSensors_DLHR::SensorResolution::RESOLUTION_18_BITS, 60.0) {}
 };
+
 
 #endif // ALLSENSORS_DLHR_SUBCLASSES_H
