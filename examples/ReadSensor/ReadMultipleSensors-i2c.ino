@@ -7,9 +7,9 @@
 
 
 /*
-Multiple AllSensors DLHR using i2c  - 24/04/2024 - Sylvain Boyer
+Multiple AllSensors DLHR using i2c  - 24/04/2022 - Sylvain Boyer
 _______________________________________________________________________________________________________________________________
-This example is using a forked of the library All Sensors from Jeremy Cole: https://github.com/sylvanoMTL/AllSensors_DLHR_multi
+This example is using a forked of the library All Sensors from Jeremy Cole: https://github.com/sylvanoMTL/AllSensors_DLHR
 The library has been modified with an asynchronous method that uses a state machine to avoid code blocking.
 For instance, if a sensor return a NaN, the other sensors are able to carry on their own pressure measurement.
 
