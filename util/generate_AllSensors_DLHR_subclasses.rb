@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!ruby
 #
 # This software is licensed under the Revised (3-clause) BSD license as follows:
 #
@@ -50,6 +50,8 @@ RANGES.sort.each do |range_name, range_value|
       puts "class #{class_name} : public AllSensors_DLHR {"
       puts "public:"
       puts "  #{class_name}(TwoWire *bus) : AllSensors_DLHR(bus, #{type_value}, #{resolution_value}, #{range_value}) {}"
+      puts "  #{class_name}(uint8_t cs_pin) : AllSensors_DLHR(cs_pin, #{type_value}, #{resolution_value}, #{range_value}) {}"
+      puts "  #{class_name}(uint8_t cs_pin, uint8_t mosi_pin, uint8_t miso_pin,uint8_t clk_pin) : AllSensors_DLHR(cs_pin, mosi_pin, miso_pin, clk_pin, #{type_value}, #{resolution_value}, #{range_value}) {}"
       puts "};"
       puts
     end
