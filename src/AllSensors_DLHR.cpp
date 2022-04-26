@@ -250,70 +250,7 @@ error:
   return true;
 }
 
-
 bool AllSensors_DLHR::readDataAsynchro(MeasurementType measurement_type){
-   bool dataReady = false;
-   
-   switch (this->state){
-      case State::STATE0:
-        startMeasurement(measurement_type);  //start conversion
-        this->state = State::STATE1;
-        break;
-
-      case State::STATE1:
-        bus->requestFrom(I2C_ADDRESS, (uint8_t) (READ_STATUS_LENGTH));// + READ_PRESSURE_LENGTH + READ_TEMPERATURE_LENGTH));
-         // Read the 8-bit status data.
-          status = bus->read();
-        if (isError(status)) {
-          // An ALU or memory error occurred.
-          bus->endTransmission();
-              this->pressure = NAN;
-              this->temperature = NAN;
-              this->state = State::STATE0;
-              dataReady = true;
-              break;
-        }
-        if (isBusy(status)) {
-          // The sensor is still busy; either retry or fail.
-          bus->endTransmission();
-        }
-        else{
-          bus->endTransmission();
-          this->state = State::STATE2;
-        }
-        break;
-
-
-      case State::STATE2:
-          bus->requestFrom(I2C_ADDRESS, (uint8_t) (READ_STATUS_LENGTH + READ_PRESSURE_LENGTH + READ_TEMPERATURE_LENGTH));
-          status = bus->read();
-          // Read the 24-bit (high 16-18 bits defined) of raw pressure data.
-          *((uint8_t *)(&raw_p)+2) = bus->read();
-          *((uint8_t *)(&raw_p)+1) = bus->read();
-          *((uint8_t *)(&raw_p)+0) = bus->read();
-
-          // Read the 24-bit (high 16 bits defined) of raw temperature data.
-          *((uint8_t *)(&raw_t)+2) = bus->read();
-          *((uint8_t *)(&raw_t)+1) = bus->read();
-          *((uint8_t *)(&raw_t)+0) = bus->read();
-          
-          bus->endTransmission();
-
-          this->pressure = convertPressure(transferPressure(raw_p & pressure_resolution_mask));
-          this->temperature = convertTemperature(transferTemperature(raw_t & temperature_resolution_mask));
-          this->state = State::STATE0;
-          dataReady = true;
-        break;
-   }
-  return dataReady;
-}
-
-
-
-
-
-
-bool AllSensors_DLHR::readDataAsynchro_V2(MeasurementType measurement_type){
    bool dataReady = false;
    
    switch (this->state){

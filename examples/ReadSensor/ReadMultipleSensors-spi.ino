@@ -81,7 +81,7 @@ void loop(){
   #else
     // initiate the measurements and get results when available
     for(byte i=0;i<pressure_arrayLen;i++){
-        condition[i]=gagepressure_array[i].readDataAsynchro_V2();
+        condition[i]=gagepressure_array[i].readDataAsynchro();
         if(condition[i]) { 
           pressure[i] = gagepressure_array[i].pressure;
           temperature[i]=gagepressure_array[i].temperature;

@@ -238,10 +238,6 @@ public:
 
   //Read Data as a state machine
   bool readDataAsynchro(MeasurementType measurement_type = MeasurementType::SINGLE);
-
-  //for debugging
-  bool readDataAsynchro_V2(MeasurementType measurement_type = MeasurementType::SINGLE);
-
 };
 
 #include "AllSensors_DLHR_subclasses.h"
