@@ -27,12 +27,16 @@ See the LICENSE file for more details.
 
 */
 
+//25-04-2022: modified for multiple i2c sensors: Sylvain Boyer
+//25-04-2022: 
+
 #ifndef ALLSENSORS_DLHR_H
 #define ALLSENSORS_DLHR_H
 
 #include <stdint.h>
 
 #include <Wire.h>
+#include <SPI.h>
 
 class AllSensors_DLHR {
 public:
@@ -87,7 +91,15 @@ public:
     KELVIN     = 'K',
   };
 
+  enum State{
+    STATE0 = 0,
+    STATE1 = 1,
+    STATE2 = 2,
+  };
+
 private:
+  //SPI bus pin config
+  uint8_t _cs, _sck, _mosi, _miso;
 
   // The length of the status information in the I2C response.
   static const uint8_t READ_STATUS_LENGTH = 1;
@@ -116,6 +128,7 @@ private:
   float pressure_zero_ref;
   PressureUnit pressure_unit;
   TemperatureUnit temperature_unit;
+  State state;
 
   // Convert a raw digital pressure read from the sensor to a floating point value in inH2O.
   float transferPressure(unsigned long raw_value) {
@@ -177,7 +190,18 @@ public:
     return (status_arg & (StatusFlags::ERROR_MEMORY | StatusFlags::ERROR_ALU)) != 0;
   }
 
+ //Constructors
+  //i2c
   AllSensors_DLHR(TwoWire *bus, SensorType type, SensorResolution pressure_resolution, float pressure_max);
+  //software-spi
+  AllSensors_DLHR(uint8_t spi_cs, uint8_t spi_mosi, uint8_t spi_miso,
+                uint8_t spi_clk, SensorType type, SensorResolution pressure_resolution, float pressure_max);
+  //hardware spi
+  AllSensors_DLHR(uint8_t spi_cs, SensorType type, SensorResolution pressure_resolution, float pressure_max);
+
+
+  //begin
+  bool begin(void);
 
   // Set the configured pressure unit for data output (the default is inH2O).
   void setPressureUnit(PressureUnit pressure_unit) {
@@ -211,6 +235,9 @@ public:
   // no longer busy. If wait is false, if the sensor is busy return "true" immediately indicating that
   // data was not available. 
   bool readData(bool wait = true);
+
+  //Read Data as a state machine
+  bool readDataAsynchro(MeasurementType measurement_type = MeasurementType::SINGLE);
 };
 
 #include "AllSensors_DLHR_subclasses.h"
