@@ -47,9 +47,11 @@ AllSensors_DLHR::AllSensors_DLHR(TwoWire *bus, SensorType type, SensorResolution
 }
 
 
-AllSensors_DLHR::AllSensors_DLHR(uint8_t spi_cs, uint8_t spi_mosi,
-                                     uint8_t spi_miso, uint8_t spi_clk, SensorType type, SensorResolution pressure_resolution, float pressure_max)
-    : temperature_unit(TemperatureUnit::CELCIUS) {
+AllSensors_DLHR::AllSensors_DLHR(uint8_t spi_cs, uint8_t spi_mosi, uint8_t spi_miso, uint8_t spi_clk, 
+                                 SensorType type, SensorResolution pressure_resolution, float pressure_max) :
+  pressure_unit(PressureUnit::IN_H2O),     
+  temperature_unit(TemperatureUnit::CELCIUS)
+{
         this->_cs = spi_cs;
         this->_mosi = spi_mosi;
         this->_miso = spi_miso;
@@ -81,7 +83,10 @@ AllSensors_DLHR::AllSensors_DLHR(uint8_t spi_cs, uint8_t spi_mosi,
 }
 
 
-AllSensors_DLHR::AllSensors_DLHR(uint8_t spi_cs, SensorType type, SensorResolution pressure_resolution, float pressure_max):temperature_unit(TemperatureUnit::CELCIUS){
+AllSensors_DLHR::AllSensors_DLHR(uint8_t spi_cs, SensorType type, SensorResolution pressure_resolution, float pressure_max):
+  pressure_unit(PressureUnit::IN_H2O),     
+  temperature_unit(TemperatureUnit::CELCIUS)
+{
     this->_cs = spi_cs;
     this->bus = NULL;
     this->type = type;
